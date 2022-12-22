@@ -7,6 +7,7 @@ import shutil
 import string
 import sys
 import tempfile
+import time
 from contextlib import contextmanager, suppress
 from datetime import datetime, timezone
 from functools import wraps
@@ -959,7 +960,11 @@ class Instaloader:
                     self.context.log("<{} skipped>".format(item), flush=True)
                     continue
                 self.context.log("[%3i/%3i] " % (count, totalcount), end="", flush=True)
+                timeoutInSeconds = 5
+                time.sleep(timeoutInSeconds)
+                self.context.log("waiting for %3i seconds" %(timeoutInSeconds),end="", flush = True)
                 count += 1
+                
                 with self.context.error_catcher('Download highlights \"{}\" from user {}'.format(user_highlight.title,
                                                                                                  name)):
                     downloaded = self.download_storyitem(item, highlight_target)
