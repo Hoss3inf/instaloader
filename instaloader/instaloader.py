@@ -7,6 +7,7 @@ import shutil
 import string
 import sys
 import tempfile
+import random
 import time
 from contextlib import contextmanager, suppress
 from datetime import datetime, timezone
@@ -874,6 +875,9 @@ class Instaloader:
                 self.context.log(path + ' exists', end=' ', flush=True)
                 return True
 
+        timeoutInSeconds = random.randInt(1,6)
+        time.sleep(timeoutInSeconds)
+        self.context.log("waiting for %3i seconds" %(timeoutInSeconds),end="", flush = True)
         date_local = item.date_local
         dirname = _PostPathFormatter(item, self.sanitize_paths).format(self.dirname_pattern, target=target)
         filename_template = os.path.join(dirname, self.format_filename(item, target=target))
@@ -960,9 +964,6 @@ class Instaloader:
                     self.context.log("<{} skipped>".format(item), flush=True)
                     continue
                 self.context.log("[%3i/%3i] " % (count, totalcount), end="", flush=True)
-                timeoutInSeconds = 5
-                time.sleep(timeoutInSeconds)
-                self.context.log("waiting for %3i seconds" %(timeoutInSeconds),end="", flush = True)
                 count += 1
                 
                 with self.context.error_catcher('Download highlights \"{}\" from user {}'.format(user_highlight.title,
